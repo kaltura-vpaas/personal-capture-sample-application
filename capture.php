@@ -14,7 +14,7 @@ $ks = $client->session->start(
 $client->setKs($ks);
 
 // set download links
-list($windows, $osx) = getUIConf($client);
+    list($windows, $osx) = getDownloadLinks($client);
 
 // get appToken to be used in json data below
 $token = getAppToken($client);
@@ -34,7 +34,7 @@ $launch_data = array(
 $launch_url = base64_encode(json_encode($launch_data));
 
 
-function getUIConf($client)
+function getDownloadLinks($client)
 {
     $filter = new KalturaUiConfFilter();
     $filter->nameLike = "KalturaCaptureVersioning";
@@ -49,7 +49,7 @@ function getUIConf($client)
 function getAppToken($client)
 {
     $filter = new KalturaAppTokenFilter();
-    $filter->sessionUserIdEqual = "avital.tzubeli@kaltura.com";
+    $filter->sessionUserIdEqual = USER_ID;
     $appTokens = $client->appToken->listAction($filter);
 
     $token = filterToken($appTokens);
@@ -64,7 +64,7 @@ function filterToken($appTokens)
 {
     foreach ($appTokens->objects as $appToken) {
         $data = json_decode($appToken->description);
-        if ($data->type === 'kalturaCaptureAppToken' && $data->version === '1.0.0')
+        if ($data->type === 'kalturaCaptureAppToken' && $data->version === CAPTURE_VERSION)
             return $appToken;
     }
     return null;
@@ -76,11 +76,11 @@ function addToken($client)
     $roleId = getRole($client);
     $appToken = new KalturaAppToken();
 
-    $appToken->sessionType = KalturaSessionType::USER;
-    $appToken->sessionUserId = "avital.tzubeli@kaltura.com";
+    $appToken->sessionType = KalturaSessionType::ADMIN;
+    $appToken->sessionUserId = USER_ID;
     $appToken->sessionPrivileges = "setrole:" . $roleId . ",editadmintags:*";
     $appToken->hashType = KalturaAppTokenHashType::SHA256;
-    $appToken->description = '{"type": "kalturaCaptureAppToken", "version": "1.0.0"}';
+    $appToken->description = '{"type": "kalturaCaptureAppToken", "version":'.CAPTURE_VERSION.'}';
 
     $result = $client->appToken->add($appToken);
     return $result;
@@ -90,7 +90,7 @@ function addToken($client)
 function getRole($client)
 {
     $filter = new KalturaUserRoleFilter();
-    $filter->nameLike = "CaptureSpace Avital";
+    $filter->nameLike = ROLE_NAME;
 
     $roles = $client->userRole->listAction($filter);
     if ($roles->objects == 0)
@@ -103,7 +103,7 @@ function addRole($client)
 {
     $role = new KalturaUserRole();
 
-    $role->name = "CaptureSpace Avital";
+    $role->name = ROLE_NAME;
     $role->description = "Upload by kalturacapture client";
     $role->permissionNames = "CONTENT_INGEST_UPLOAD,CONTENT_MANAGE_BASE,cuePoint.MANAGE, CONTENT_MANAGE_THUMBNAIL, STUDIO_BASE";
     $role->tags = "kalturacapture";
