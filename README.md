@@ -1,11 +1,11 @@
 # kaltura-capture-protocol-sample-app
 This is a guide on how to implement a custom protocol for launching Kaltura Capture from your own application. *It is not a standalone app*
 
-## Getting started ## 
+## Getting started
 
 Don't forget to fill in the blanks in `config.php`. Your Partner ID, Admin Secret (can both be found in Integration Settings in the KMC), and the relevant User ID, as well as the current version of Kaltura Capture and any name to describe the user role for KalturaCapture. 
 
-## Download links for the latest version of Kaltura Capture ##
+## Download links for the latest version of Kaltura Capture
 
 Before launch is available, the application must be installed. The download URLS for both Windows and OSX can be found in the global Kaltura UiConf object. Right at the beginning of the php script, after configuring and setting a new Kaltura Session on a Client object, you'll find this line `list($windows, $osx) = getDownloadLinks($client);` 
 
@@ -13,7 +13,7 @@ Before launch is available, the application must be installed. The download URLS
 
 You'll find those links being used in the html at the bottom of the code. You can also do a check to see if the user already has the application installed (read more [here](https://stackoverflow.com/questions/2872090/how-to-check-if-a-custom-protocol-supported)). 
 
-## Creating a launch url ## 
+## Creating a launch url
 
 Essentially the launch url looks like this: 
 
@@ -65,16 +65,16 @@ Thank you for helping Kaltura grow! If you'd like to contribute please follow th
 * Read [Contributing Code to the Kaltura Platform](https://github.com/kaltura/platform-install-packages/blob/master/doc/Contributing-to-the-Kaltura-Platform.md)
 * Sign the [Kaltura Contributor License Agreement](https://agentcontribs.kaltura.org/)
 
-# Where to get help
+## Where to get help
 * Join the [Kaltura Community Forums](https://forum.kaltura.org/) to ask questions or start discussions
 * Read the [Code of conduct](https://forum.kaltura.org/faq) and be patient and respectful
 
-# Get in touch
+## Get in touch
 We'd love to hear from you!
 You can learn more about Kaltura and start a free trial at: http://corp.kaltura.com    
 Contact us via Twitter [@Kaltura](https://twitter.com/Kaltura) or email: community@kaltura.com  
 
-# License and Copyright Information
+## License and Copyright Information
 All code in this project is released under the [AGPLv3 license](http://www.gnu.org/licenses/agpl-3.0.html) unless a different license for a particular library is specified in the applicable library path.   
 
 Copyright © Kaltura Inc. All rights reserved.   
