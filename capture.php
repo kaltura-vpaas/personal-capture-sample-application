@@ -2,8 +2,9 @@
 
 require_once('config.php');
 
-// set up client
-
+/**
+ * Set up Kaltura Client
+ */
 $config = new KalturaConfiguration();
 $client = new KalturaClient($config);
 $ks = $client->session->start(
@@ -13,16 +14,19 @@ $ks = $client->session->start(
     PARTNER_ID);
 $client->setKs($ks);
 
-// set download links
-
+/**
+ * Set download links
+ */
 list($windows, $osx) = getDownloadLinks($client);
 
-// get appToken to be used in json data below
-
+/**
+ * Get appToken to be used in launch_data
+ */
 $token = getAppToken($client);
 
-// json settings object that is encoded to become the launch url
-
+/**
+ * JSON settings object that is encoded to become the launch URL
+ */
 $launch_data = array(
     "appToken" => $token->token,
     "appTokenId" => $token->id,
@@ -37,9 +41,15 @@ $launch_data = array(
 
 $launch_url = base64_encode(json_encode($launch_data));
 
-// search for UiConf object with the name "kalturaCaptureVersioning
-// return both win and osx download links from the config object inside
 
+/**
+ * Search for UiConf object with the name "kalturaCaptureVersioning
+ * Retrieve download links from config object
+ *
+ * @param Kaltura Client
+ *
+ * @return windows and osx download links
+ */
 function getDownloadLinks($client)
 {
     $filter = new KalturaUiConfFilter();
@@ -51,9 +61,14 @@ function getDownloadLinks($client)
     return array($windows, $osx);
 }
 
-// get all available user tokens and sends through filterToken()
-// return relevant or new token
 
+/**
+ * Get all available user tokens and send through filterToken()
+ *
+ * @param Kaltura Client
+ *
+ * @return relevant or new token
+ */
 function getAppToken($client)
 {
     $filter = new KalturaAppTokenFilter();
@@ -67,9 +82,14 @@ function getAppToken($client)
     return $token;
 }
 
-// iterate through user tokens to find type "kalturaCaptureAppToken" with the correct version
-// return first matching token or null if not found
-
+/**
+ * Iterate through user tokens to find type "kalturaCaptureAppToken"
+ * and the correct version
+ *
+ * @param list of appTokens
+ *
+ * @return first matching token or null if not found
+ */
 function filterToken($appTokens)
 {
     foreach ($appTokens->objects as $appToken) {
@@ -80,8 +100,15 @@ function filterToken($appTokens)
     return null;
 }
 
-// create and return new app token with specific privileges and settings
-
+/**
+ * Create and return new app token
+ * with specific privileges and settings
+ * and various permissions needed for launch
+ *
+ * @param Kaltura Client
+ *
+ * @return appToken
+ */
 function addToken($client)
 {
     $roleId = getRole($client);
@@ -97,9 +124,15 @@ function addToken($client)
     return $result;
 }
 
-// search for existing role by configured name
-// return id for relevant or new role
 
+/**
+ * Search for existing role by configured name
+ * Create new role if it doesn't exist
+ *
+ * @param Kaltura Client
+ *
+ * @return id of matching or new role
+ */
 function getRole($client)
 {
     $filter = new KalturaUserRoleFilter();
@@ -111,8 +144,15 @@ function getRole($client)
     else return $roles->objects[0]->id;
 }
 
-// create and return id of new role with pre configured name and various permissions needed for launch
 
+/**
+ * Create and return id of new role with pre configured name
+ * and various permissions needed for launch
+ *
+ * @param Kaltura Client
+ *
+ * @return id of new role
+ */
 function addRole($client)
 {
     $role = new KalturaUserRole();
@@ -125,7 +165,6 @@ function addRole($client)
     $result = $client->userRole->add($role);
     return $result->id;
 }
-
 ?>
 
 <html>
