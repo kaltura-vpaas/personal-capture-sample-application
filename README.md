@@ -1,4 +1,4 @@
-# kaltura-capture-protocol-sample-app
+# personal-capture-sample-application
 This is a guide on how to implement a custom protocol for launching Kaltura Capture from your own application. *It is not a standalone app*
 
 ## Getting started
@@ -9,7 +9,7 @@ Don't forget to fill in the blanks in `config.php`. Your Partner ID, Admin Secre
 
 Before launch is available, the application must be installed. The download URLS for both Windows and OSX can be found in the global Kaltura UiConf object. Right at the beginning of the php script, after configuring and setting a new Kaltura Session on a Client object, you'll find this line `list($windows, $osx) = getDownloadLinks($client);` 
 
-*getDownloadLinks()* looks for a uiConf object with the name "KalturaCaptureVersioning" and then decodes the returned json. Both download links, which are found in the config object of the uiConf, are returned from the function. 
+**getDownloadLinks()** looks for a uiConf object with the name "KalturaCaptureVersioning" and then decodes the returned json. Both download links, which are found in the config object of the uiConf, are returned from the function. 
 
 You'll find those links being used in the html at the bottom of the code. You can also do a check to see if the user already has the application installed (read more [here](https://stackoverflow.com/questions/2872090/how-to-check-if-a-custom-protocol-supported)). 
 

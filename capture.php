@@ -14,10 +14,14 @@ $ks = $client->session->start(
 $client->setKs($ks);
 
 // set download links
-    list($windows, $osx) = getDownloadLinks($client);
+
+list($windows, $osx) = getDownloadLinks($client);
 
 // get appToken to be used in json data below
+
 $token = getAppToken($client);
+
+// json settings object that is encoded to become the launch url
 
 $launch_data = array(
     "appToken" => $token->token,
@@ -33,6 +37,8 @@ $launch_data = array(
 
 $launch_url = base64_encode(json_encode($launch_data));
 
+// search for UiConf object with the name "kalturaCaptureVersioning
+// return both win and osx download links from the config object inside
 
 function getDownloadLinks($client)
 {
@@ -45,6 +51,8 @@ function getDownloadLinks($client)
     return array($windows, $osx);
 }
 
+// get all available user tokens and sends through filterToken()
+// return relevant or new token
 
 function getAppToken($client)
 {
@@ -59,6 +67,8 @@ function getAppToken($client)
     return $token;
 }
 
+// iterate through user tokens to find type "kalturaCaptureAppToken" with the correct version
+// return first matching token or null if not found
 
 function filterToken($appTokens)
 {
@@ -70,6 +80,7 @@ function filterToken($appTokens)
     return null;
 }
 
+// create and return new app token with specific privileges and settings
 
 function addToken($client)
 {
@@ -86,6 +97,8 @@ function addToken($client)
     return $result;
 }
 
+// search for existing role by configured name
+// return id for relevant or new role
 
 function getRole($client)
 {
@@ -98,6 +111,7 @@ function getRole($client)
     else return $roles->objects[0]->id;
 }
 
+// create and return id of new role with pre configured name and various permissions needed for launch
 
 function addRole($client)
 {
