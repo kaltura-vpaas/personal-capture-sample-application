@@ -1,5 +1,6 @@
 # personal-capture-sample-application
-This is a guide on how to implement a custom protocol for launching Kaltura Capture from your own application. *It is not a standalone app*
+This is a guide on how to implement a custom protocol for launching Kaltura Capture from your own application. 
+*It is not a standalone app*
 
 ## Getting started
 
@@ -7,7 +8,7 @@ Don't forget to fill in the blanks in `config.php`. Your Partner ID, Admin Secre
 
 ## Download links for the latest version of Kaltura Capture
 
-Before launch is available, the application must be installed. The download URLS for both Windows and OSX can be found in the global Kaltura UiConf object. Right at the beginning of the php script, after configuring and setting a new Kaltura Session on a Client object, you'll find this line `list($windows, $osx) = getDownloadLinks($client);` 
+Before launch is available, the application must be installed. The download URLs for both Windows and OSX can be found in the global Kaltura UiConf object. Right at the beginning of the php script, after configuring and setting a new Kaltura Session on a Client object, you'll find this line `list($windows, $osx) = getDownloadLinks($client);` 
 
 **getDownloadLinks()** looks for a uiConf object with the name "KalturaCaptureVersioning" and then decodes the returned json. Both download links, which are found in the config object of the uiConf, are returned from the function. 
 
@@ -40,7 +41,7 @@ So how do you get that app token?
 You'll first retrieve all available Application Tokens for the given user, and search through them to find the first one of type KalturaCaptureToken and the current version of Personal Capture. 
 If the token doesn't exist, create a new one: 
 A token creation requires a specific Personal Capture roles, which you search for, or create a new one if it does not exist. The role is created with a pre configured name, various permissions needed for the application launch, and the tag "kalturacapture."
-Once you have the relevant role, its ID is used to create a new ApplicationToken, with other settings such as the hashType(SHA-256 in this case), token type, and current version.  
+Once you have the relevant role, its ID is used to create a new ApplicationToken, with other settings such as the hashType (SHA-256 in this case), token type, and current version.  
 
 When you finally have the app token, you're ready to create the json settings object. It needs the `token` and the `id` of the application token object. Some other fields are: 
 - **appHost** is the hosting application url that is being used when generating the uploaded entry URL. For example, when using KMS, the host url will be `www.<partnerId>.kaltura.com`
@@ -51,7 +52,7 @@ Encode the object with a Base64 encoder, and you end up with a string that looks
 
 `ICAgIHsNCiAgICAgICAgImFwcFRva2VuIjogInh4eHh4eCIsDQogICAgICAgICJhcHBUb2tlbklkIjogIjFfeHh4eHgiLA0KICAgICAgICAidXNlcklkIjogInh4eHgueHh4eHh4QGthbHR1cmEuY29tIiwNCiAgICAgICAgInBhcnRuZXJJZCI6ICJ4eHh4eHgiLA0KICAgICAgICAic2VydmljZVVybCI6ICJodHRwOi8vd3d3LmthbHR1cmEuY29tIiwNCiAgICAgICAgImFwcEhvc3QiOiAieHh4eHh4eC5rYWx0dXJhLmNvbSIsDQogICAgICAgICJlbnRyeVVSTCI6ICJtZWRpYSIsDQogICAgICAgICJob3N0aW5nQXBwVHlwZSI6ICJNZWRpYVNwYWNlIiwNCiAgICAgICAgImhhc2hUeXBlIjogIlNIQTI1NiINCiAgICB9`
 
-Add the prefix `kaltura-pc:`, as can be seen in the HTML portion of the code. Run that url from the browser, and assuming that Personal Capture is installed, the app should now launch! 
+Add the prefix `kaltura-pc:`, as can be seen in the HTML portion of the code. Run that url from the browser, and assuming Personal Capture is installed, the app should now launch! 
 
 
 # How you can help (guidelines for contributors) 
